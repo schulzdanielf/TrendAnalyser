@@ -2,3 +2,4 @@ Flask
 dash
 dash-core-components
 dash-html-components
+psycopg2-binary
