@@ -24,5 +24,11 @@ services:
     ports:
       - "5432:5432"
 
+  data_collector:
+    build: ./data_collector
+    container_name: data_collector
+    depends_on:
+      - db
+
 volumes:
   db_data:

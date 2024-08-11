@@ -1,0 +1,39 @@
+# Diretório do código fonte
+SRC_DIR = app
+
+# Limpar arquivos compilados Python e cache
+clean:
+	find $(SRC_DIR) -type f -name "*.py[co]" -delete
+	find $(SRC_DIR) -type d -name "__pycache__" -delete
+	rm -rf .mypy_cache
+	rm -rf .pytest_cache
+
+# Formatar código usando black
+format:
+	black $(SRC_DIR)
+
+# Lint com flake8
+lint:
+	flake8 --config=.flake8 $(SRC_DIR)
+
+# Verificar tipos com mypy
+mypy:
+	mypy $(SRC_DIR)
+
+# Executar testes com pytest
+test:
+	pytest
+
+# Instalar dependências do projeto
+install:
+	pip install -r requirements.txt
+
+# Atualizar dependências do projeto
+update:
+	pip install --upgrade -r requirements.txt
+
+# Recriar ambiente de desenvolvimento (exclui e reinstala dependências)
+rebuild: clean install
+
+# Tarefas padrões
+.PHONY: clean format lint mypy test install update rebuild

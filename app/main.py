@@ -1,32 +1,16 @@
+# app/main.py
+
 from flask import Flask, render_template
-import psycopg2
+from .database import connect_to_database
+from .dash_app import create_dash_app
 
-# Configurações de conexão
-DATABASE = {
-    'host': 'db',  # Nome do serviço Docker
-    'database': 'mydatabase',
-    'user': 'myuser',
-    'password': 'mypassword',
-    'port': 5432,
-}
-
-def connect_to_database():
-    try:
-        conn = psycopg2.connect(**DATABASE)
-        return conn
-    except Exception as e:
-        print("Error connecting to the database:", e)
-        return None
-
-# Cria a aplicação Flask
+# Inicializar o servidor Flask
 server = Flask(__name__)
 
-# Configuração do aplicativo Dash
-# (mantenha a configuração atual do Dash)
 
-@server.route('/')
+@server.route("/")
 def index():
-    # Exemplo de consulta ao banco de dados
+    """Rota da página inicial."""
     conn = connect_to_database()
     if conn:
         cur = conn.cursor()
@@ -34,8 +18,12 @@ def index():
         result = cur.fetchone()
         cur.close()
         conn.close()
-        return render_template('index.html', db_time=result[0])
-    return "Could not connect to the database"
+        return render_template("index.html", db_time=result[0])
+    return "Não foi possível conectar ao banco de dados"
 
-if __name__ == '__main__':
-    server.run(host='0.0.0.0', port=5000, debug=True)
+
+# Inicializar a aplicação Dash
+dash_app = create_dash_app(server)
+
+if __name__ == "__main__":
+    server.run(debug=True, host="0.0.0.0", port=5000)

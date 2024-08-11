@@ -1,0 +1,17 @@
+[flake8]
+# Ignorar regras específicas de estilo e código
+ignore = E203, E266, E501, W503, F403, F401
+
+# Limite de linhas por arquivo
+max-line-length = 88
+
+# Diretórios para incluir/excluir
+exclude = 
+    .git,
+    __pycache__,
+    docs,
+    build,
+    dist
+
+# Configurações adicionais (opcional)
+select = B,C,E,F,W,T4
