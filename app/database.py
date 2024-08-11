@@ -23,13 +23,14 @@ def connect_to_database():
 
 
 def fetch_data_from_db():
-    """Busca dados do banco de dados PostgreSQL."""
+    """Get data from the database."""
     conn = connect_to_database()
     if conn:
         df = pd.read_sql(
-            "SELECT term, interest FROM trends_data WHERE location = 'São Paulo'", conn
+            "SELECT term, interest, date FROM trends_data WHERE date >= NOW() - INTERVAL '7 day'",
+            conn,
         )
         conn.close()
         return df
-    else:
-        return pd.DataFrame(columns=["term", "interest"])
+    print("Não foi possível conectar ao banco de dados.")
+    return pd.DataFrame()

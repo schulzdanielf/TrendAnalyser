@@ -1,103 +1,74 @@
-# collect_data.py
-
 from pytrends.request import TrendReq
 import pandas as pd
 import psycopg2
-from psycopg2.extras import execute_values
+from datetime import datetime
 import time
 
 def connect_to_trends():
     """Estabelece conexão com o Google Trends."""
     return TrendReq(hl='pt-BR', tz=360)
 
-def connect_to_db():
-    """Conecta ao banco de dados PostgreSQL."""
-    return psycopg2.connect(
-        host="my_postgres",
-        database="mydatabase",
-        user="myuser",
-        password="mypassword"
-    )
+def get_interest_over_time(pytrends, keywords, region='BR-SP'):
+    """Obtém dados de interesse ao longo do tempo para uma lista de palavras-chave."""
+    pytrends.build_payload(keywords, cat=0, timeframe='today 1-m', geo=region, gprop='')
+    try:
+        data = pytrends.interest_over_time()
+    except Exception as e:
+        print(f"Erro ao obter dados: {e}")
+        return pd.DataFrame()
 
-def create_table():
-    """Cria a tabela trends_data se ela não existir."""
-    # Conectar ao banco de dados
-    conn = psycopg2.connect(
-        host="my_postgres",
-        database="mydatabase",
-        user="myuser",
-        password="mypassword"
-    )
-    
-    # Criar um cursor
-    cur = conn.cursor()
-    
-    # Comando SQL para criar a tabela
+    if data.empty:
+        print("Nenhum dado disponível.")
+        return pd.DataFrame()
+
+    data = data.reset_index()
+    df = pd.melt(data, id_vars=['date'], value_vars=keywords, var_name='term', value_name='interest')
+    return df
+
+def store_data(df, db_params):
+    """Armazena os dados no banco de dados PostgreSQL."""
+    conn = psycopg2.connect(**db_params)
+    cursor = conn.cursor()
+
+    # Cria a tabela se não existir
     create_table_query = '''
     CREATE TABLE IF NOT EXISTS trends_data (
         id SERIAL PRIMARY KEY,
         term VARCHAR(255),
-        interest INTEGER,
-        location VARCHAR(255)
-    );
+        interest FLOAT,
+        date TIMESTAMP
+    )
     '''
-    
-    # Executar o comando
-    cur.execute(create_table_query)
-    
-    # Confirmar a transação
+    cursor.execute(create_table_query)
+
+    # Apaga todos os dados
+    cursor.execute("DELETE FROM trends_data")    
+
+    # Insere os dados
+    for _, row in df.iterrows():
+        cursor.execute(
+            "INSERT INTO trends_data (term, interest, date) VALUES (%s, %s, %s)",
+            (row['term'], row['interest'], row['date'])
+        )
+
     conn.commit()
-    
-    # Fechar a conexão
-    cur.close()
+    cursor.close()
     conn.close()
-    print("Tabela criada com sucesso.")
-
-# Executar a função para criar a tabela
-create_table()
-
-def get_interest_by_city(pytrends, keywords, region='BR-SP'):
-    """Obtém dados de interesse por cidade para uma lista de palavras-chave."""
-    pytrends.build_payload(keywords, cat=0, timeframe='today 3-m', geo=region, gprop='')
-    interest_by_region_df = pytrends.interest_by_region(resolution='CITY', inc_low_vol=True, inc_geo_code=False)
-    
-    if 'São Paulo' in interest_by_region_df.index:
-        sao_paulo_data = interest_by_region_df.loc['São Paulo']
-        return sao_paulo_data.sort_values(ascending=False)
-    else:
-        print("Dados para a cidade de São Paulo não encontrados.")
-        return pd.Series()
-
-def insert_data_to_db(conn, data, keywords):
-    """Insere os dados de interesse no banco de dados."""
-    with conn.cursor() as cursor:
-        sql = "INSERT INTO trends_data (term, interest, location) VALUES %s"
-        values = [(keyword, interest, 'São Paulo') for keyword, interest in zip(keywords, data)]
-        execute_values(cursor, sql, values)
-    conn.commit()
-
-def main():
-    pytrends = connect_to_trends()
-    conn = connect_to_db()
-
-    try:
-        # Definir a lista de palavras-chave de interesse
-        keywords = ["tecnologia", "inovação", "startups", "inteligência artificial", "computação"]
-
-        # Obter dados de interesse por cidade
-        sao_paulo_interest = get_interest_by_city(pytrends, keywords)
-        print("Interesse por termos de tecnologia na cidade de São Paulo:")
-        print(sao_paulo_interest)
-
-        # Inserir dados no banco de dados
-        if not sao_paulo_interest.empty:
-            insert_data_to_db(conn, sao_paulo_interest, keywords)
-
-    finally:
-        conn.close()
 
 if __name__ == "__main__":
+    # Configurações de conexão com o banco de dados
+    db_params = {
+        'host': 'my_postgres',
+        'database': 'mydatabase',
+        'user': 'myuser',
+        'password': 'mypassword',
+        'port': 5432
+    }
     while True:
-        main()
-        time.sleep(600)
-    
+        pytrends = connect_to_trends()
+        keywords = ['Ricardo Nunes', 'Guilherme Boulos', 'Pablo Marçal', 'Tabata Amaral', 'Datena']
+        
+        df = get_interest_over_time(pytrends, keywords)
+        if not df.empty:
+            store_data(df, db_params)
+        time.sleep(3600)  # Aguarda 1 hora
