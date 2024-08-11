@@ -1,0 +1,52 @@
+/* style.css */
+
+/* Defina o fundo preto para todo o documento */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #000; /* Cor de fundo preto */
+    color: #fff; /* Cor do texto branco */
+    font-family: Arial, sans-serif;
+}
+
+/* Configura a classe dash-container para cobrir toda a tela */
+.dash-container {
+    min-height: 100vh; /* Garante que a altura mínima cubra a tela */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #000; /* Cor de fundo preto */
+    box-sizing: border-box; /* Inclui o padding no cálculo do tamanho */
+}
+
+/* Estiliza os cabeçalhos */
+h1, h2, h3, h4, h5, h6 {
+    color: #fff; /* Cor do texto branco */
+    text-align: center;
+}
+
+/* Estiliza os links */
+a {
+    color: #1e90ff; /* Cor dos links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estiliza o gráfico do Dash */
+#interest-graph {
+    width: 100%;
+    height: 80vh;
+    border: 1px solid #333; /* Borda para o gráfico */
+}
+
+/* Estiliza qualquer container extra para margem e padding */
+.container {
+    width: 100%;
+    padding: 20px;
+    background-color: #000; /* Garante fundo preto em toda parte 

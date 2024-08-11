@@ -27,7 +27,7 @@ def fetch_data_from_db():
     conn = connect_to_database()
     if conn:
         df = pd.read_sql(
-            "SELECT term, interest, date FROM trends_data WHERE date >= NOW() - INTERVAL '7 day'",
+            "SELECT term, candidate, interest, date FROM trends_data WHERE date >= NOW() - INTERVAL '10 day'",
             conn,
         )
         conn.close()

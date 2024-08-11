@@ -1,0 +1,102 @@
+/* style.css */
+
+/* Defina o fundo claro para todo o documento */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9; /* Cor de fundo clara */
+    color: #333; /* Cor do texto escura */
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* Fonte moderna */
+}
+
+/* Configura a classe dash-container para cobrir toda a tela */
+.dash-container {
+    min-height: 100vh; /* Garante que a altura mínima cubra a tela */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9; /* Cor de fundo clara */
+    box-sizing: border-box; /* Inclui o padding no cálculo do tamanho */
+}
+
+/* Estiliza os cabeçalhos */
+h1, h2, h3, h4, h5, h6 {
+    color: #333; /* Cor do texto escura */
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+}
+
+/* Estiliza os links */
+a {
+    color: #007bff; /* Cor dos links */
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #0056b3; /* Cor do link ao passar o mouse */
+    text-decoration: underline;
+}
+
+/* Estiliza os gráficos do Dash */
+.dash-graph {
+    width: 80%; /* Ajuste a largura para 80% */
+    height: 80vh;
+    border: 1px solid #ddd; /* Borda clara para o gráfico */
+    margin: 20px auto; /* Centraliza os gráficos */
+    max-width: 1200px; /* Define uma largura máxima para os gráficos */
+    border-radius: 8px; /* Borda arredondada */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estiliza qualquer container extra para margem e padding */
+.container {
+    width: 100%;
+    padding: 20px;
+    background-color: #f9f9f9; /* Garante fundo claro em toda parte */
+    box-sizing: border-box; /* Inclui o padding no cálculo do tamanho */
+}
+
+/* Estiliza o rodapé */
+footer {
+    background-color: #e9e9e9; /* Cor de fundo clara */
+    color: #333; /* Cor do texto escura */
+    padding: 10px 0; /* Espaçamento interno */
+    text-align: center; /* Alinhamento centralizado */
+    position: fixed; /* Fixa o rodapé na parte inferior da tela */
+    width: 100%; /* Largura total */
+    bottom: 0; /* Alinha na parte inferior */
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); /* Sombra no topo do rodapé */
+}
+
+/* Estiliza o cabeçalho */
+header {
+    background-color: #e9e9e9; /* Cor de fundo clara */
+    color: #333; /* Cor do texto escura */
+    padding: 10px 0; /* Espaçamento interno */
+    text-align: center; /* Alinhamento centralizado */
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* Sombra na parte inferior do cabeçalho */
+}
+
+/* Estiliza o conteúdo principal */
+main {
+    width: 80%; /* Largura de 80% */
+    max-width: 1200px; /* Largura máxima de 1200px */
+    margin: 20px auto; /* Margem de 20px nas laterais */
+    padding: 20px; /* Espaçamento interno */
+    background-color: #fff; /* Cor de fundo branca */
+    border-radius: 8px; /* Borda arredondada */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra suave */
+}
+
+/* Estiliza o formulário */
+form {
+    display: flex; /* Exibe os elementos em linha */
+    flex-wrap: wrap; /* Quebra a linha se não houver espaço */
+    justify-content: center; /* Alinha os elementos ao centro */
+    margin: 20px 0; /* Margem em torno do formulário */
+}

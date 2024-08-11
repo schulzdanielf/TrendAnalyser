@@ -8,7 +8,12 @@ from .callbacks import register_callbacks
 
 def create_dash_app(server: Flask) -> dash.Dash:
     """Cria e configura a aplicação Dash."""
-    dash_app = dash.Dash(__name__, server=server, url_base_pathname="/dash/")
+    dash_app = dash.Dash(
+        __name__,
+        server=server,
+        url_base_pathname="/dash/",
+        external_stylesheets=["./static/styles.css"],
+    )
 
     # Configurar layout da aplicação Dash
     dash_app.layout = create_layout()
