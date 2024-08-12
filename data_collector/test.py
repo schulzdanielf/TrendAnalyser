@@ -53,13 +53,13 @@ def fetch_g1_news(query, num_articles=5):
 
 def fetch_final_link(link):
     """Obtém o link final de uma notícia."""
+    if not link.startswith('http'):
+        link = f'https:{link}'
     response = requests.get(link)
     if response.status_code != 200:
         print(f"Erro ao acessar o link da notícia: {response.status_code}")
-    
-    link_final = response.text.split('window.location.replace("')[1].split('");')[0]
 
-    print(f"Link final: {link_final}")
+    link_final = response.text.split('window.location.replace("')[1].split('");')[0]
 
     return link_final
 
@@ -83,13 +83,16 @@ def fetch_news_text(news_link):
     soup = BeautifulSoup(response.text, 'html.parser')
     
     # Ajuste o seletor de acordo com a estrutura da página de notícia
-    text_container = soup.find('p', class_=' content-text__container ')  # Exemplo de seletor
+    text_container = soup.find('p', class_='content-text__container')  # Exemplo de seletor
+    full_text = ''
     if text_container:
-        paragraphs = text_container.find_all('p')
-        full_text = '\n'.join(paragraph.get_text(strip=True) for paragraph in paragraphs)
+        # For loop para pegar todos os p e a tag de texto
+        for text in text_container:
+            # concatenate the text
+            full_text += text.get_text()
         return full_text
     else:
-        return 'Texto não disponível'
+        return ''
 
 
 def store_news(articles, db_params):
@@ -131,24 +134,21 @@ if __name__ == "__main__":
         'password': 'mypassword',
         'port': 5432
     }
-    
+
     # Busca notícias relacionadas a "Tabata Amaral"
     query = 'Tabata'
-    news_articles = fetch_g1_news(query, num_articles=1)
-    
+    news_articles = fetch_g1_news(query, num_articles=10)
+
     print(f"Encontradas {len(news_articles)} notícias sobre {query}")
 
     # imprimir 3 noticías
-    for article in news_articles[:3]:
-        print("Título",article['title'])
-        print()
-        print("Link",article['link'])
-        print()
-        print("Data",article['date'])
-        print()
-        print("Descrição",article['description'])
-        print()
-        print("Texto",article['full_text'])        
+    for article in news_articles:
+        print("Título: ",article['title'])
+        print("Link: ",article['link'])
+        #print("Data: ",article['date'])
+        #print()
+        print("Descrição: ",article['description'])
+        print("Texto", article['full_text'])        
         print()
 
 
