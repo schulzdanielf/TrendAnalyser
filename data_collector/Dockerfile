@@ -5,11 +5,8 @@ FROM python:3.9-slim
 WORKDIR /usr/src/app
 
 # Copie os arquivos de dependência e instale-os
-COPY requirements.txt ./
+COPY . . 
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie o script de coleta de dados
-COPY collect_data.py .
-
 # Execute o script de coleta de dados
-CMD ["python", "collect_data.py"]
+CMD ["python", "-m", "collect_data"]
