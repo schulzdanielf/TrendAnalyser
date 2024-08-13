@@ -2,3 +2,4 @@ pytrends
 pandas
 psycopg2-binary
 python-dotenv
+bs4

@@ -1,2 +1,5 @@
 # Arquivo .gitignore
 .env
+
+data_collector/test.ipynb
+data_collector/test.py

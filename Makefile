@@ -4,13 +4,14 @@ SRC_DIR = app
 # Limpar arquivos compilados Python e cache
 clean:
 	find $(SRC_DIR) -type f -name "*.py[co]" -delete
-	find $(SRC_DIR) -type d -name "__pycache__" -delete
+	find $(SRC_DIR) -type d -name "__pycache__" -delete 
+	find . -type d -name "__pycache__" -exec rm -rf {} +
 	rm -rf .mypy_cache
 	rm -rf .pytest_cache
 
 # Formatar código usando black
 format:
-	black $(SRC_DIR)
+	black .
 
 # Lint com flake8
 lint:
