@@ -23,7 +23,7 @@ mypy:
 
 # Executar testes com pytest
 test:
-	pytest
+	pytest --cov=app
 
 # Instalar dependências do projeto
 install:
