@@ -21,6 +21,7 @@ services:
       POSTGRES_DB: mydatabase
     volumes:
       - db_data:/var/lib/postgresqlanalyzer/data
+      - ./scripts/sql:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
 

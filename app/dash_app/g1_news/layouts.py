@@ -11,7 +11,6 @@ def create_layout():
     # Buscar os dados das notícias
     df = fetch_data_from_g1()
 
-    # convert date to day
     df["date"] = df["date"].dt.date
 
     # filter last 7 days

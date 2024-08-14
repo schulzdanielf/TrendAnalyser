@@ -15,7 +15,7 @@ format:
 
 # Lint com flake8
 lint:
-	flake8 --config=.flake8 $(SRC_DIR)
+	flake8 --config=.flake8 .
 
 # Verificar tipos com mypy
 mypy:

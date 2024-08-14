@@ -11,5 +11,5 @@ pd.set_option("future.no_silent_downcasting", True)
 if __name__ == "__main__":
     while True:
         collect_data_from_google()
-        # collect_news_from_g1(5)
+        collect_news_from_g1(1)
         time.sleep(3600)  # Aguarda 1 hora
