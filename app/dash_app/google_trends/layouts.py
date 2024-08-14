@@ -1,7 +1,7 @@
 from dash import dcc, html
 import plotly.express as px
 import plotly.graph_objects as go
-from ..database import fetch_data_from_db
+from app.database import fetch_data_from_db
 
 
 def create_layout():
