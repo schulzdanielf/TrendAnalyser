@@ -197,7 +197,7 @@ def store_news(articles):
     conn.close()
 
 
-def collect_news_from_g1():
+def collect_news_from_g1(num_articles=5):
     """Coleta notícias do G1 e armazena no banco de dados."""
     candidatos = [
         "Tabata Amaral",
@@ -208,7 +208,7 @@ def collect_news_from_g1():
     ]
     for candidato in candidatos:
         print(f"Coletando notícias para: {candidato}")
-        articles = fetch_g1_news(candidato, num_articles=20)
+        articles = fetch_g1_news(candidato, num_articles=num_articles)
         store_news(articles)
         # sleep for 10 seconds
         time.sleep(5)

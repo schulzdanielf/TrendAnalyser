@@ -3,12 +3,19 @@
 from dash import dcc, html
 import plotly.express as px
 from app.database import fetch_data_from_g1
+import pandas as pd
 
 
 def create_layout():
     """Cria o layout da aplicação Dash para Google Trends."""
     # Buscar os dados das notícias
     df = fetch_data_from_g1()
+
+    # convert date to day
+    df["date"] = df["date"].dt.date
+
+    # filter last 7 days
+    df = df[df["date"] >= df["date"].max() - pd.Timedelta(days=7)]
 
     # Agrupar por candidato e data e somar o número de notícias
     df_grouped = (
