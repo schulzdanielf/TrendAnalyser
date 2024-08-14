@@ -31,5 +31,17 @@ services:
     depends_on:
       - db
 
+  machine_learning:
+    build: ./machine_learning
+    container_name: machine_learning
+    volumes:
+      - ./machine_learning:/app
+    depends_on:
+      - db
+    environment:
+      MODEL_PATH: "/app/model"
+    ports:
+      - "8501:8501"
+
 volumes:
   db_data:

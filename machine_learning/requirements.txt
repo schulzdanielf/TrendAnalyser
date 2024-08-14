@@ -1,0 +1,2 @@
+vaderSentiment
+pyscopg2-binary
